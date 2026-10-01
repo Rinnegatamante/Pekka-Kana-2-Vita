@@ -637,7 +637,7 @@ int vasprintf(char **strp, const char *fmt, va_list ap);
 
 // From https://github.com/kraj/uClibc/blob/master/libc/misc/dirent/scandir.c
 int scandir_hook(const char *dir, struct android_dirent ***namelist,
-	int (*selector) (const struct dirent *),
+	int (*selector) (const struct android_dirent *),
 	int (*compar) (const struct dirent **, const struct dirent **))
 {
 	//printf("scandir %s\n", dir);
@@ -1520,9 +1520,9 @@ int set_fps(int val) {
 }
 
 void patch_game(void) {
-	hook_addr(so_symbol(&pekka2_mod, "_ZN6PUtils17ExternalWriteableEv"), ret1);
-	hook_addr(so_symbol(&pekka2_mod, "_ZN5PFile4Path4FindEv"), Find);
-	hook_addr(so_symbol(&pekka2_mod, "_ZN5PFile4Path5GetRWEPKc"), GetRW);
+	hook_addr(so_symbol(&pekka2_mod, "_ZN6PUtils17ExternalWriteableEv"), (uintptr_t)ret1);
+	hook_addr(so_symbol(&pekka2_mod, "_ZN5PFile4Path4FindEv"), (uintptr_t)Find);
+	hook_addr(so_symbol(&pekka2_mod, "_ZN5PFile4Path5GetRWEPKc"), (uintptr_t)GetRW);
 	hook_addr(so_symbol(&pekka2_mod, "_ZN5PFile8scan_apkEPKcS1_"), so_symbol(&pekka2_mod, "_ZN5PFile9scan_fileEPKcS1_"));
 	//set_fps_orig = hook_addr(so_symbol(&pekka2_mod, "_ZN5Piste7set_fpsEi"), set_fps);
 }
